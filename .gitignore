@@ -1,0 +1,4 @@
+node_modules
+/build/compiled
+/next-feature-flags.d.ts
+/next-feature-flags.js

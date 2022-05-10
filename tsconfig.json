@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "strictNullChecks": true,
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "strict": false,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "checkJs": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "react-jsx",
+    "stripInternal": true,
+    "skipDefaultLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "outDir": "build/compiled",
+    "declaration": true,
+    "target": "es2017",
+  },
+  "include": ["src", "./next-feature-flags.d.ts"],
+  "exclude": ["node_modules", "compiled"]
+}
