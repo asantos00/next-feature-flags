@@ -27,7 +27,7 @@
     "typescript": "^4.6.4",
     "uglify-es": "^3.3.9"
   },
-  "files": ["build/compiled/*", "next-feature-flags.d.ts"],
+  "files": ["build/compiled/*", "index.d.ts"],
   "dependencies": {
     "@types/node": "^17.0.31",
     "react": "^17.0.2 || ^18"
