@@ -38,6 +38,22 @@ const { getFeatureFlag } = configure({
 const shouldShowLoginBanner = () => getFeatureFlag('SHOW_LOGIN_BANNER')
 ```
 
+## Overriding feature flags on the browser
+
+To override feature flags on the client, use the `window.FEATURES` interface.
+
+On the console:
+
+```js
+> window.FEATURES
+> {SHOW_LOGIN_BANNER: {enable: fn, disable: fn}}
+> window.FEATURES.SHOW_LOGIN_BANNER.enable()
+> 'FEATURES_SHOW_LOGIN_BANNER=true'
+```
+
+Using this interface will set the cookie value, if you're using the feature flags on the server side (like `getServerSideProps`) make sure you reload your browser.
+
+Whenever you want to turn it off, you can use the `disable` method the same way.
 
 ## Using feature flags from the environment
 
