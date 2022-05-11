@@ -38,6 +38,10 @@ const { getFeatureFlag } = configure({
 const shouldShowLoginBanner = () => getFeatureFlag('SHOW_LOGIN_BANNER')
 ```
 
+**Note:** `next-feature-flags` uses the `FEATURE` key both to write/read from cookies and from the environment, meaning the if you send `SHOW_LOGIN_BANNER` `next-feature-flags` will try to read from `FEATURE_SHOW_LOGIN_BANNER` and will read/write from that same cookie. 
+
+Possible improvement: customize this key.
+
 ## Overriding feature flags on the browser
 
 To override feature flags on the client, use the `window.FEATURES` interface.
@@ -51,7 +55,7 @@ On the console:
 > 'FEATURES_SHOW_LOGIN_BANNER=true'
 ```
 
-Using this interface will set the cookie value, if you're using the feature flags on the server side (like `getServerSideProps`) make sure you reload your browser.
+Using this interface will set the cookie value (FEATURES_SHOW_LOGIN_BANNER), if you're using the feature flags on the server side (like `getServerSideProps`) make sure you reload your browser.
 
 Whenever you want to turn it off, you can use the `disable` method the same way.
 
