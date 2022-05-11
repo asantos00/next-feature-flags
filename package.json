@@ -1,39 +1,43 @@
 {
   "name": "next-feature-flags",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "description": "A package to enable feature-flag support on Next.js via cookies and environment variables",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "_clear": "rimraf build/compiled/*",
     "_tsc": "tsc",
     "_make-bundle": "node build/make-bundle",
     "build": "run-s _clear _tsc _make-bundle",
     "watch": "tsc --watch"
   },
-  "keywords": ["nextjs", "feature-flags", "react", "cookies"],
+  "keywords": [
+    "nextjs",
+    "feature-flags",
+    "react",
+    "cookies"
+  ],
   "author": "asantos00",
   "license": "MIT",
   "main": "build/compiled/index.js",
   "types": "build/compiled/index.d.ts",
   "devDependencies": {
+    "@types/jest": "^27.5.0",
+    "@types/node": "^17.0.31",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.3",
+    "jest": "^28.1.0",
+    "jsdom": "^19.0.0",
     "next": "^12.1.6",
     "npm-run-all": "^4.1.5",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "rimraf": "^3.0.2",
     "rollup": "^2.72.1",
-    "typescript": "^4.6.4",
-    "uglify-es": "^3.3.9"
+    "ts-jest": "^28.0.2",
+    "typescript": "^4.6.4"
   },
-  "files": ["build/compiled/*", "index.d.ts"],
-  "dependencies": {
-    "@types/node": "^17.0.31",
-    "react": "^17.0.2 || ^18"
-  },
-  "peerDependencies": {
-    "react": "^17.0.2 || ^18",
-    "react-dom": "^17.0.2 || ^18"
-  }
+  "files": [
+    "build/compiled/*",
+    "index.d.ts"
+  ]
 }
