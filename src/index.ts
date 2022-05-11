@@ -2,8 +2,6 @@
 import * as Next from "next";
 import getConfig from 'next/config';
 
-const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
-
 export const isServer = () => {
   return typeof window === 'undefined';
 };
@@ -39,6 +37,8 @@ export const configure = <KeysType extends string>(
 ) => {
   defineWindowInterface(featureFlags, allowCookieOverride);
 
+  const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
+
   return {
     getFeatureFlag: (key: KeysType, context?: Next.GetServerSidePropsContext) => {
       const index = `FEATURE_${key}`;
@@ -55,8 +55,11 @@ export const configure = <KeysType extends string>(
 
       const fromEnv = serverRuntimeConfig[index] || publicRuntimeConfig[index];
       if (fromEnv) {
-        return Boolean(fromEnv);
+        return _stringToBool(fromEnv);
       }
+
+      console.warn(`Feature flag "${key}" does not exist on next-feature-flags`);
+      return false;
     },
   };
 };
