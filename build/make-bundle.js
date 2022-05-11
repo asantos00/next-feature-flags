@@ -2,13 +2,9 @@ const { promisify } = require("util")
 const fs = require("fs")
 const path = require("path")
 const rollup = require("rollup")
-const uglifyEs = require("uglify-es")
 const readFile = promisify(fs.readFile)
-const writeFile = promisify(fs.writeFile)
-const packageName = "next-feature-flags"
 const srcPath = path.join(__dirname, "..", "src")
 const compiledPath = path.join(__dirname, "compiled")
-const distNpmPath = path.join(__dirname, "..")
 async function build() {
   let bundle = await rollup.rollup({
     input: path.join(compiledPath, "index.js")
