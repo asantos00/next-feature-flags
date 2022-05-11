@@ -1,6 +1,6 @@
 {
   "name": "next-feature-flags",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "A package to enable feature-flag support on Next.js via cookies and environment variables",
   "scripts": {
     "test": "jest",
@@ -18,6 +18,10 @@
   ],
   "author": "asantos00",
   "license": "MIT",
+  "repository": {
+    "url": "https://github.com/asantos00/next-feature-flags",
+    "type": "git"
+  },
   "main": "build/compiled/index.js",
   "types": "build/compiled/index.d.ts",
   "devDependencies": {
