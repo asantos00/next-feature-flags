@@ -69,10 +69,10 @@ To expose these variables there (and make them available both on the client and 
 // next.config.js
 module.exports = {
   serverRuntimeConfig: {
-    SHOW_LOGIN_BANNER: process.env.SHOW_LOGIN_BANNER, // Pass through env variables
+    SHOW_LOGIN_BANNER: process.env.FEATURE_SHOW_LOGIN_BANNER, // Pass through env variables
   },
   publicRuntimeConfig: {
-    SHOW_LOGIN_BANNER: process.env.NEXT_PUBLIC_SHOW_LOGIN_BANNER
+    SHOW_LOGIN_BANNER: process.env.NEXT_PUBLIC_FEATURE_SHOW_LOGIN_BANNER
   },
 }
 ```
