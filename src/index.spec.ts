@@ -10,7 +10,7 @@ const utilMockGetConfigForEnvVariable = (obj: Record<string, string>) => {
   });
 };
 
-jest.mock('next/config');
+jest.mock("next/config");
 
 describe("basic configuration", () => {
   beforeEach(() => {
@@ -30,7 +30,11 @@ describe("basic configuration", () => {
   });
 
   it("warns when using a feature flag that doesnt exist", () => {
-    const { getFeatureFlag } = configure();
+    const { getFeatureFlag } = configure({
+      debug: true,
+      allowCookieOverride: [],
+      featureFlags: ["abcd"],
+    });
 
     console.warn = jest.fn();
 
@@ -47,11 +51,9 @@ describe("get feature flag from cookie", () => {
     jest.resetAllMocks();
 
     utilMockGetConfigForEnvVariable({});
-
     const dom = new JSDOM();
     global.document = dom.window.document;
     global.window = dom.window;
-    document.cookie = "";
   });
   it("returns true for feature flag defined on cookie", () => {
     const { getFeatureFlag } = configure({
@@ -171,7 +173,6 @@ describe("get feature flag from cookie", () => {
 });
 
 describe("feature flag from env variable", () => {
-
   beforeEach(() => {
     jest.resetAllMocks();
     utilMockGetConfigForEnvVariable({});
@@ -286,19 +287,18 @@ describe("feature flag from env variable", () => {
   });
 });
 
-describe('cookie overriding env on allowed variables', () => {
+describe("cookie overriding env on allowed variables", () => {
   beforeEach(() => {
     jest.resetAllMocks();
 
     const dom = new JSDOM();
     global.document = dom.window.document;
     global.window = dom.window;
-    document.cookie = "";
     utilMockGetConfigForEnvVariable({});
-  })
+  });
 
-  it('prefers cookie false over env when allowCookieOverride enabled', () => {
-    utilMockGetConfigForEnvVariable({ FEATURE_FOO: 'true' });
+  it("prefers cookie false over env when allowCookieOverride enabled", () => {
+    utilMockGetConfigForEnvVariable({ FEATURE_FOO: "true" });
 
     const { getFeatureFlag } = configure({
       featureFlags: ["FOO"],
@@ -308,10 +308,10 @@ describe('cookie overriding env on allowed variables', () => {
     document.cookie = "FEATURE_FOO=false;something=wrong";
 
     expect(getFeatureFlag("FOO")).toBeFalsy();
-  })
+  });
 
-  it('prefers cookie true over env when allowCookieOverride enabled', () => {
-    utilMockGetConfigForEnvVariable({ FEATURE_FOO: 'false' });
+  it("prefers cookie true over env when allowCookieOverride enabled", () => {
+    utilMockGetConfigForEnvVariable({ FEATURE_FOO: "false" });
 
     const { getFeatureFlag } = configure({
       featureFlags: ["FOO"],
@@ -321,10 +321,13 @@ describe('cookie overriding env on allowed variables', () => {
     document.cookie = "FEATURE_FOO=true;something=wrong";
 
     expect(getFeatureFlag("FOO")).toBeTruthy();
-  })
+  });
 
-  it('gets env value when variable is not in allowCookieOVerride', () => {
-    utilMockGetConfigForEnvVariable({ FEATURE_FOO: 'false', FEATURE_BAR: 'true' });
+  it("gets env value when variable is not in allowCookieOVerride", () => {
+    utilMockGetConfigForEnvVariable({
+      FEATURE_FOO: "false",
+      FEATURE_BAR: "true",
+    });
 
     const { getFeatureFlag } = configure({
       featureFlags: ["FOO", "BAR"],
@@ -335,28 +338,27 @@ describe('cookie overriding env on allowed variables', () => {
 
     expect(getFeatureFlag("BAR")).toBeTruthy();
     expect(getFeatureFlag("FOO")).toBeTruthy();
-  })
-})
+  });
+});
 
-describe('window interface', () => {
+describe("window interface", () => {
   beforeEach(() => {
     jest.resetAllMocks();
 
     const dom = new JSDOM();
     global.document = dom.window.document;
     global.window = dom.window;
-    document.cookie = "";
     utilMockGetConfigForEnvVariable({});
-  })
+  });
 
-  it('makes it possible to enable a variable via window', () => {
-    document.cookie = "FEATURE_FOO=true;FEATURE_BAR=false";
+  it("makes it possible to enable a variable via window", () => {
+    document.cookie = "FEATURE_FOO=true";
+    document.cookie = "FEATURE_BAR=false";
 
     const { getFeatureFlag } = configure({
       featureFlags: ["FOO", "BAR"],
       allowCookieOverride: ["FOO", "BAR"],
     });
-
 
     expect(getFeatureFlag("BAR")).toBeFalsy();
     window.FEATURES.BAR.enable();
@@ -366,20 +368,33 @@ describe('window interface', () => {
 
     expect(getFeatureFlag("BAR")).toBeTruthy();
     expect(getFeatureFlag("FOO")).toBeFalsy();
-  })
+  });
 
-  it('only provide interface to overridable variables', () => {
-    document.cookie = "FEATURE_FOO=true;FEATURE_BAR=false";
+  it("shows state of the feature from cookie", () => {
+    document.cookie = "FEATURE_FOO=true";
+    document.cookie = "FEATURE_BAR=false";
+
+    configure({
+      featureFlags: ["FOO", "BAR"],
+      allowCookieOverride: ["FOO", "BAR"],
+    });
+
+    expect(window.FEATURES.BAR.state()).toBeFalsy();
+    expect(window.FEATURES.FOO.state()).toBeTruthy();
+  });
+
+  it("only provide interface to overridable variables", () => {
+    document.cookie = "FEATURE_FOO=true";
+    document.cookie = "FEATURE_BAR=false";
 
     const { getFeatureFlag } = configure({
       featureFlags: ["FOO", "BAR"],
       allowCookieOverride: ["FOO"],
     });
 
-
     expect(getFeatureFlag("FOO")).toBeTruthy();
     expect(getFeatureFlag("BAR")).toBeFalsy();
 
     expect(window.FEATURES.BAR).toBeFalsy();
-  })
-})
+  });
+});
