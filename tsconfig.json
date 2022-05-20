@@ -16,7 +16,8 @@
     "outDir": "build/compiled",
     "declaration": true,
     "target": "es2017",
+    "typeRoots": ["./node_modules/@types", "./index.d.ts"]
   },
-  "include": ["src", "index.ts", "index.d.ts"],
+  "include": ["src", "src/index.ts", "index.d.ts"],
   "exclude": ["node_modules", "compiled", "**/*.spec.ts"]
 }
