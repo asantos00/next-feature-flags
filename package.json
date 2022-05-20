@@ -3,12 +3,15 @@
   "version": "0.0.5",
   "description": "A package to enable feature-flag support on Next.js via cookies and environment variables",
   "scripts": {
+    "preversion": "npm test",
     "test": "jest",
     "_clear": "rimraf build/compiled/*",
     "_tsc": "tsc",
     "_make-bundle": "node build/make-bundle",
     "build": "run-s _clear _tsc _make-bundle",
-    "watch": "tsc --watch"
+    "watch": "tsc --watch",
+    "version": "npm run build",
+    "postversion": "git push && git push --tags && rm -rf build/compiled"
   },
   "keywords": [
     "nextjs",
