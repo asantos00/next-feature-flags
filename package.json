@@ -11,7 +11,7 @@
     "build": "run-s _clear _tsc _make-bundle",
     "watch": "tsc --watch",
     "version": "npm run build",
-    "postversion": "git push && git push --tags && rm -rf build/compiled"
+    "postversion": "git push && git push --tags"
   },
   "keywords": [
     "nextjs",
