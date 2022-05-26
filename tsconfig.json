@@ -4,7 +4,7 @@
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "strict": false,
-    "module": "esnext",
+    "module": "commonjs",
     "moduleResolution": "node",
     "checkJs": true,
     "resolveJsonModule": true,
@@ -15,7 +15,7 @@
     "allowSyntheticDefaultImports": true,
     "outDir": "build/compiled",
     "declaration": true,
-    "target": "es2017"
+    "target": "es2017",
   },
   "include": ["src", "src/index.ts", "index.d.ts"],
   "exclude": ["node_modules", "compiled", "**/*.spec.ts"]

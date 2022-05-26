@@ -7,7 +7,7 @@
     "test": "jest",
     "_clear": "rimraf build/compiled/*",
     "_tsc": "tsc",
-    "_make-bundle": "node build/make-bundle",
+    "_make-bundle": "node build/make-bundle.cjs",
     "build": "run-s _clear _tsc _make-bundle",
     "watch": "tsc --watch",
     "version": "npm run build",
@@ -27,6 +27,7 @@
   },
   "main": "build/compiled/index.js",
   "types": "build/compiled/index.d.ts",
+  "type": "module",
   "devDependencies": {
     "@types/jest": "^27.5.0",
     "@types/node": "^17.0.31",
