@@ -7,7 +7,7 @@
     "test": "jest",
     "_clear": "rimraf build/compiled/*",
     "_tsc": "tsc",
-    "_make-bundle": "node build/make-bundle",
+    "_make-bundle": "node build/make-bundle.cjs",
     "build": "run-s _clear _tsc _make-bundle",
     "watch": "tsc --watch",
     "version": "npm run build",

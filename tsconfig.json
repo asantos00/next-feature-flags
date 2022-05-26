@@ -17,6 +17,6 @@
     "declaration": true,
     "target": "es2017"
   },
-  "include": ["src", "src/index.ts", "index.d.ts"],
+  "include": ["src", "index.ts", "index.d.ts"],
   "exclude": ["node_modules", "compiled", "**/*.spec.ts"]
 }
