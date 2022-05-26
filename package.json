@@ -27,7 +27,6 @@
   },
   "main": "build/compiled/index.js",
   "types": "build/compiled/index.d.ts",
-  "type": "module",
   "devDependencies": {
     "@types/jest": "^27.5.0",
     "@types/node": "^17.0.31",
