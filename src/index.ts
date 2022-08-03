@@ -35,6 +35,14 @@ const getFeatureFromCookie = (
 const getFeatureFromEnv = (key: string) => {
   const { serverRuntimeConfig, publicRuntimeConfig } = getConfig() || {};
 
+  /*
+   * Question: should this instead be:
+   *
+   * serverRuntimeConfig[key] ?? publicRuntimeConfig[key]
+   *
+   * Returns publicRuntimeConfig[key] if serverRuntimeConfig[key] is null or undefined
+   * Returns serverRuntimeConfig[key] if is 0 or ""
+   */
   return serverRuntimeConfig[key] || publicRuntimeConfig[key];
 }
 
@@ -50,7 +58,6 @@ export const configure = <KeysType extends string>(
   } = { featureFlags: [], allowCookieOverride: [] }
 ) => {
   defineWindowInterface(featureFlags, allowCookieOverride);
-
 
   return {
     getFeatureFlag: (
