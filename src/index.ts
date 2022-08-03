@@ -107,13 +107,14 @@ function defineWindowInterface(
           return features;
         }
 
-        const cookieName = `FEATURE_${key}`;
+        const featureKey = `FEATURE_${key}`;
         return {
           ...features,
           [key]: {
-            enable: () => (document.cookie = `${cookieName}=true;`),
-            disable: () => (document.cookie = `${cookieName}=false;`),
-            state: () => getFeatureFromCookie(cookieName, { htmlDocument: document })
+            enable: () => (document.cookie = `${featureKey}=true;`),
+            disable: () => (document.cookie = `${featureKey}=false;`),
+            state: () =>
+              getFeatureFromCookie(featureKey, { htmlDocument: document }) || getFeatureFromEnv(featureKey)
           },
         };
       }, {});
