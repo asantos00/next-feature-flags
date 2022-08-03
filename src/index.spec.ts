@@ -379,8 +379,33 @@ describe("window interface", () => {
       allowCookieOverride: ["FOO", "BAR"],
     });
 
-    expect(window.FEATURES.BAR.state()).toBeFalsy();
-    expect(window.FEATURES.FOO.state()).toBeTruthy();
+    expect(window.FEATURES.BAR.state()).toEqual('false');
+    expect(window.FEATURES.FOO.state()).toEqual('true');
+  });
+
+  it("shows state of the feature from env when cookie not available", () => {
+    utilMockGetConfigForEnvVariable({
+      FEATURE_BAR: "false",
+      FEATURE_FOO: "true"
+    });
+
+    configure({
+      featureFlags: ["FOO", "BAR"],
+      allowCookieOverride: ["FOO", "BAR"],
+    });
+
+    expect(window.FEATURES.BAR.state()).toEqual('false');
+    expect(window.FEATURES.FOO.state()).toEqual('true');
+  });
+
+  it("shows state false when feature not available", () => {
+    configure({
+      featureFlags: ["FOO", "BAR"],
+      allowCookieOverride: ["FOO", "BAR"],
+    });
+
+    expect(window.FEATURES.BAR.state()).toEqual('false');
+    expect(window.FEATURES.FOO.state()).toEqual('false');
   });
 
   it("only provide interface to overridable variables", () => {
