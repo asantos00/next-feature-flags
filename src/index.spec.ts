@@ -379,8 +379,8 @@ describe("window interface", () => {
       allowCookieOverride: ["FOO", "BAR"],
     });
 
-    expect(window.FEATURES.BAR.state()).toBeFalsy();
-    expect(window.FEATURES.FOO.state()).toBeTruthy();
+    expect(window.FEATURES.BAR.state()).toEqual('false');
+    expect(window.FEATURES.FOO.state()).toEqual('true');
   });
 
   it("only provide interface to overridable variables", () => {

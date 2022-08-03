@@ -18,15 +18,11 @@ const _parseCookie = (cookie: string) => {
 };
 
 const _stringToBool = (boolString: string) => {
-  if (boolString.toLowerCase() === "true" || boolString === "1") {
-    return true;
-  }
-
-  return false;
+  return boolString.toLowerCase() === "true" || boolString === "1"
 };
 
 const getFeatureFromCookie = (
-  cookieName: string,
+  key: string,
   {
     context,
     htmlDocument,
@@ -34,17 +30,13 @@ const getFeatureFromCookie = (
     context?: Next.GetServerSidePropsContext;
     htmlDocument: { cookie: any };
   }
-) => {
-  const fromCookie = isServer()
-    ? context?.req.cookies[cookieName]
-    : _parseCookie(htmlDocument.cookie)[cookieName];
+) => isServer() ? context?.req.cookies[key] : _parseCookie(htmlDocument.cookie)[key];
 
-  if (fromCookie) {
-    return _stringToBool(fromCookie);
-  }
+const getFeatureFromEnv = (key: string) => {
+  const { serverRuntimeConfig, publicRuntimeConfig } = getConfig() || {};
 
-  return false;
-};
+  return serverRuntimeConfig[key] || publicRuntimeConfig[key];
+}
 
 export const configure = <KeysType extends string>(
   {
@@ -59,28 +51,28 @@ export const configure = <KeysType extends string>(
 ) => {
   defineWindowInterface(featureFlags, allowCookieOverride);
 
-  const { serverRuntimeConfig, publicRuntimeConfig } = getConfig();
 
   return {
     getFeatureFlag: (
       key: KeysType,
       context?: Next.GetServerSidePropsContext
     ) => {
-      const index = `FEATURE_${key}`;
+      const featureKey = `FEATURE_${key}`;
 
       if (allowCookieOverride.includes(key)) {
-        const fromCookie = isServer()
-          ? context?.req.cookies[index]
-          : _parseCookie(document.cookie)[index];
+        const fromCookie = getFeatureFromCookie(featureKey, {
+          htmlDocument: document,
+          context
+        })
 
         if (fromCookie) {
           return _stringToBool(fromCookie);
         }
       }
 
-      const fromEnv = serverRuntimeConfig[index] || publicRuntimeConfig[index];
+      const fromEnv = getFeatureFromEnv(featureKey)
       if (fromEnv) {
-        return _stringToBool(fromEnv);
+        return _stringToBool(fromEnv)
       }
 
       debug
@@ -88,6 +80,7 @@ export const configure = <KeysType extends string>(
             `Feature flag "${key}" does not exist on next-feature-flags`
           )
         : null;
+
       return false;
     },
   };
@@ -105,7 +98,6 @@ function defineWindowInterface(
         // Only create interface for features with override
         if (!allowCookieOverride.includes(key)) {
           return features;
-
         }
 
         const cookieName = `FEATURE_${key}`;
@@ -114,7 +106,7 @@ function defineWindowInterface(
           [key]: {
             enable: () => (document.cookie = `${cookieName}=true;`),
             disable: () => (document.cookie = `${cookieName}=false;`),
-            state: () => getFeatureFromCookie(cookieName, { htmlDocument: document }),
+            state: () => getFeatureFromCookie(cookieName, { htmlDocument: document })
           },
         };
       }, {});
