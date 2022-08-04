@@ -35,7 +35,7 @@ const getFeatureFromCookie = (
 const getFeatureFromEnv = (key: string) => {
   const { serverRuntimeConfig, publicRuntimeConfig } = getConfig() || {};
 
-  return serverRuntimeConfig[key] || publicRuntimeConfig[key];
+  return serverRuntimeConfig[key] ?? publicRuntimeConfig[key];
 }
 
 export const configure = <KeysType extends string>(
